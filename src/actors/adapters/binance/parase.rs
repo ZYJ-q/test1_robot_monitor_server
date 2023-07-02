@@ -137,9 +137,9 @@ pub async fn get_account_sub(
         // let position = amts * prices;
 
 
-        let leverage = amts.abs() / new_total_equity; // 杠杆率 = 仓位价值 / 本金（账户总金额 + 未实现盈亏）
+        let leverage = (amts.abs() * 60.00) / (new_total_equity * 60.00); // 杠杆率 = 仓位价值 / 本金（账户总金额 + 未实现盈亏）
         // println!("当前杠杆率{}", leverage);
-        let leverage_eth = amts.abs()/ total_wallet_balance;
+        let leverage_eth = (amts.abs() * 60.00)/ (total_wallet_balance * 60.00);
 
         if let Some(data) = http_api.get_open_orders("none").await {
             let value: Value = serde_json::from_str(&data).unwrap();
