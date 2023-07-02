@@ -52,6 +52,11 @@ pub async fn server(ip: String, config_db: HashMap<String, String>) -> std::io::
             .service(web::resource("/get_bybit_equity").route(web::post().to(handlers::get_bybit_equity)))
             .service(web::resource("/get_bian_equity").route(web::post().to(handlers::get_bian_equity)))
             .service(web::resource("/get_test_bian_xh01_equity").route(web::post().to(handlers::get_bian_xh01_equity)))
+            .service(web::resource("/get_test_bian_xh01_equity_one").route(web::post().to(handlers::get_bian_xh01_equity_one)))
+            .service(web::resource("/get_test_bian_xh01_equity_two").route(web::post().to(handlers::get_bian_xh01_equity_two)))
+            .service(web::resource("/get_test_bian_xh01_equity_three").route(web::post().to(handlers::get_bian_xh01_equity_three)))
+            .service(web::resource("/get_test_bian_xh01_equity_four").route(web::post().to(handlers::get_bian_xh01_equity_four)))
+            .service(web::resource("/get_test_bian_xh01_equity_five").route(web::post().to(handlers::get_bian_xh01_equity_five)))
             
     })
     .bind((ip.as_str(), 8081))?

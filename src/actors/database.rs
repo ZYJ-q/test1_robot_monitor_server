@@ -677,6 +677,81 @@ pub fn get_bian_xh01_equity(
         // println!("获取历史交易数据account1{:?}", trades);
         return Ok(equitys);
 }
+// 获取回测权益xh01数据
+pub fn get_bian_xh01_equity1(
+    pool: web::Data<Pool>,
+) -> Result<Vec<BianEquity>> {
+    let mut conn = pool.get_conn().unwrap();
+    // let mut re: Vec<Trade> = Vec::new();
+        let equitys = conn.query_map(
+            "select * from  test_two_bian_xh01_equity order by time",
+            |(id, name, time, equity, r#type)| {
+                BianEquity{id, name, time, equity, r#type}
+            }
+            ).unwrap();
+        // println!("获取历史交易数据account1{:?}", trades);
+        return Ok(equitys);
+}
+// 获取回测权益xh01数据
+pub fn get_bian_xh01_equity2(
+    pool: web::Data<Pool>,
+) -> Result<Vec<BianEquity>> {
+    let mut conn = pool.get_conn().unwrap();
+    // let mut re: Vec<Trade> = Vec::new();
+        let equitys = conn.query_map(
+            "select * from  test_three_bian_xh01_equity order by time",
+            |(id, name, time, equity, r#type)| {
+                BianEquity{id, name, time, equity, r#type}
+            }
+            ).unwrap();
+        // println!("获取历史交易数据account1{:?}", trades);
+        return Ok(equitys);
+}
+// 获取回测权益xh01数据
+pub fn get_bian_xh01_equity3(
+    pool: web::Data<Pool>,
+) -> Result<Vec<BianEquity>> {
+    let mut conn = pool.get_conn().unwrap();
+    // let mut re: Vec<Trade> = Vec::new();
+        let equitys = conn.query_map(
+            "select * from  test_four_bian_xh01_equity order by time",
+            |(id, name, time, equity, r#type)| {
+                BianEquity{id, name, time, equity, r#type}
+            }
+            ).unwrap();
+        // println!("获取历史交易数据account1{:?}", trades);
+        return Ok(equitys);
+}
+// 获取回测权益xh01数据
+pub fn get_bian_xh01_equity4(
+    pool: web::Data<Pool>,
+) -> Result<Vec<BianEquity>> {
+    let mut conn = pool.get_conn().unwrap();
+    // let mut re: Vec<Trade> = Vec::new();
+        let equitys = conn.query_map(
+            "select * from  test_five_bian_xh01_equity order by time",
+            |(id, name, time, equity, r#type)| {
+                BianEquity{id, name, time, equity, r#type}
+            }
+            ).unwrap();
+        // println!("获取历史交易数据account1{:?}", trades);
+        return Ok(equitys);
+}
+// 获取回测权益xh01数据
+pub fn get_bian_xh01_equity5(
+    pool: web::Data<Pool>,
+) -> Result<Vec<BianEquity>> {
+    let mut conn = pool.get_conn().unwrap();
+    // let mut re: Vec<Trade> = Vec::new();
+        let equitys = conn.query_map(
+            "select * from  test_six_bian_xh01_equity order by time",
+            |(id, name, time, equity, r#type)| {
+                BianEquity{id, name, time, equity, r#type}
+            }
+            ).unwrap();
+        // println!("获取历史交易数据account1{:?}", trades);
+        return Ok(equitys);
+}
 
 // 获取持仓数据
 pub fn get_history_positions(
