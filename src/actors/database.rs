@@ -101,13 +101,13 @@ pub fn add_active(
         },
     );
     match res {
-        Ok(()) => match get_traders_new(pool, account_id) {
+        Ok(()) => match get_products(pool, account_id) {
             Ok(res) => match res {
                 Some(data) => {
                     for item in data {
                         re.push(SignInProRes {
-                            name: String::from(item.name),
-                            id: item.tra_id.to_string(),
+                            name: String::from(item.prod_name),
+                            id: item.prod_id.to_string(),
                         });
                     }
                     return Ok(re);
@@ -219,7 +219,7 @@ pub fn get_products(pool: web::Data<Pool>, account_id: u64) -> Result<Option<Vec
 }
 
 
-pub fn get_traders_new(pool: web::Data<Pool>, account_id: u64) -> Result<Option<Vec<Trader>>> {
+pub fn get_traders_new(pool: web::Data<Pool>, account_id: &u64) -> Result<Option<Vec<Trader>>> {
     let mut products: Vec<Trader> = Vec::new();
     let mut conn = pool.get_conn().unwrap();
     let res: Result<Vec<u64>> = conn.exec(

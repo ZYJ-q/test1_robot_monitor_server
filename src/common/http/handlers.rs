@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::actors::database::get_bian_xh01_equity1;
 
-use super::{database, SignIn, SignInRes, SignOut, Account, actions, Trade, Posr, NetWorthRe, IncomesRe, Equity, DateTrade, DelectOrders, AddOrders, AddPositions, UpdatePositions,AccountEquity, UpdateOriBalance, UpdateAlarms, AddAccounts, SelectId, SelectAccount};
+use super::{database, SignIn, SignInRes, SignOut, Account, actions, Trade, Posr, NetWorthRe, IncomesRe, Equity, SelectTraders, DateTrade, DelectOrders, AddOrders, AddPositions, UpdatePositions,AccountEquity, UpdateOriBalance, UpdateAlarms, AddAccounts, SelectId, SelectAccount};
 
 const MAX_SIZE: usize = 262_144; // max payload size is 256k
 
@@ -121,7 +121,7 @@ pub async fn select_traders(mut payload: web::Payload, db_pool: web::Data<Pool>)
     }
 
     // body is loaded, now we can deserialize serde-json
-    let obj = serde_json::from_slice::<SelectAccount>(&body)?;
+    let obj = serde_json::from_slice::<SelectTraders>(&body)?;
 
     match database::is_active(db_pool.clone(), &obj.token) {
         true => {}
@@ -130,7 +130,7 @@ pub async fn select_traders(mut payload: web::Payload, db_pool: web::Data<Pool>)
         }
     }
 
-    let date = database::get_new_traders(db_pool.clone(), &obj.tra_id);
+    let date = database::get_traders_new(db_pool.clone(), &obj.account_id);
         match date {
             Ok(traders) => {
                 // println!("{:#?}", traders);

@@ -74,6 +74,13 @@ pub struct SelectAccount {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct SelectTraders {
+    pub account_id: u64,
+    pub r#type: String,
+    pub token: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Trade {
     pub tra_id: String,
     pub r#type: String,
