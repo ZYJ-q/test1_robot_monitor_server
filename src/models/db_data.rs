@@ -5,6 +5,7 @@ pub struct Account {
     pub acc_id: u64,
     pub acc_name: String,
     pub acc_password: String,
+    pub admin: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

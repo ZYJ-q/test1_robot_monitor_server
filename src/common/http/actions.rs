@@ -104,12 +104,6 @@ pub async fn get_bybit_account_(traders: HashMap<String, db_data::Trader>) -> ht
         }
     }
 
-
-
-
-
-
-
     // 预备数据
     let mut data: http_data::AccountByBitRe = http_data::AccountByBitRe::new();
 
@@ -123,8 +117,11 @@ pub async fn get_bybit_account_(traders: HashMap<String, db_data::Trader>) -> ht
         let id = &traders.get(name).unwrap().tra_id;
         let alarm = &traders.get(name).unwrap().show;
         let res = get_account_bybit(value, name, id, origin.parse().unwrap(), &alarm).await;
+
+        
         match res {
             Some(sub) => {
+                // println!("res账户信息{:?}", sub);
                 // equities += sub.total_equity.parse::<f64>().unwrap();
                 // equities_eth += sub.total_equity_eth.parse::<f64>().unwrap();
                 // origins += origin.parse::<f64>().unwrap();

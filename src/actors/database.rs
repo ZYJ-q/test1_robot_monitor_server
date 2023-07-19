@@ -28,7 +28,7 @@ pub fn check_account(pool: web::Data<Pool>, name: &str, password: &str) -> Resul
     let mut conn = pool.get_conn().unwrap();
     let res = conn
         .exec_first(
-            r"select * from account_information where acc_name = :name and acc_password = :password",
+            r"select * from accounts where acc_name = :name and acc_password = :password",
             params! {
                 "name" => name,
                 "password" => password
@@ -37,10 +37,11 @@ pub fn check_account(pool: web::Data<Pool>, name: &str, password: &str) -> Resul
         .map(
             // Unpack Result
             |row| {
-                row.map(|(acc_id, acc_name, acc_password)| Account {
+                row.map(|(acc_id, acc_name, acc_password, admin)| Account {
                     acc_id,
                     acc_name,
                     acc_password,
+                    admin
                 })
             },
         );
@@ -99,13 +100,13 @@ pub fn add_active(
         },
     );
     match res {
-        Ok(()) => match get_products(pool, account_id) {
+        Ok(()) => match get_traders_new(pool, account_id) {
             Ok(res) => match res {
                 Some(data) => {
                     for item in data {
                         re.push(SignInProRes {
-                            name: String::from(item.prod_name),
-                            id: item.prod_id.to_string(),
+                            name: String::from(item.name),
+                            id: item.tra_id.to_string(),
                         });
                     }
                     return Ok(re);
@@ -214,6 +215,134 @@ pub fn get_products(pool: web::Data<Pool>, account_id: u64) -> Result<Option<Vec
         }
         Err(e) => return Err(e),
     }
+}
+
+
+pub fn get_traders_new(pool: web::Data<Pool>, account_id: u64) -> Result<Option<Vec<Trader>>> {
+    let mut products: Vec<Trader> = Vec::new();
+    let mut conn = pool.get_conn().unwrap();
+    let res: Result<Vec<u64>> = conn.exec(
+        r"select tra_id from test_acc_tra where acc_id = :acc_id",
+        params! {
+            "acc_id" => account_id
+        },
+    );
+    match res {
+        Ok(tra_ids) => {
+            for tra_id in tra_ids {
+                let mut conn = pool.get_conn().unwrap();
+                let prod = conn
+                    .exec_first(
+                        r"select * from test_traders where tra_id = :tra_id",
+                        params! {
+                            "tra_id" => tra_id
+                        },
+                    )
+                    .map(
+                        // Unpack Result
+                        |row| {
+                            row.map(|(tra_id,
+                                tra_venue,
+                                ori_balance,
+                                tra_currency,
+                                api_key,
+                                secret_key,
+                                other_keys,
+                                r#type,
+                                name,
+                                show,
+                                threshold,)| Trader {
+                                tra_id,
+                tra_venue,
+                ori_balance,
+                tra_currency,
+                api_key,
+                secret_key,
+                other_keys,
+                r#type,
+                name,
+                show,
+                threshold,
+                            })
+                        },
+                    );
+                match prod {
+                    Ok(produc) => match produc {
+                        Some(product) => {
+                            products.push(product);
+                        }
+                        None => {
+                            continue;
+                        }
+                    },
+                    Err(e) => {
+                        return Err(e);
+                    }
+                }
+            }
+            return Ok(Some(products));
+        }
+        Err(e) => return Err(e),
+    }
+}
+
+
+pub fn get_new_traders(pool: web::Data<Pool>, tra_id: &str) -> Result<Option<Vec<Trader>>> {
+    let mut traders: Vec<Trader> = Vec::new();
+    let mut conn = pool.get_conn().unwrap();
+    let res = conn
+    .exec_first(
+                r"select * from test_traders where tra_id = :tra_id",
+                params! {
+                        "tra_id" => tra_id
+                        },
+                )
+                .map(
+                        // Unpack Result
+                        |row| {
+                            row.map(
+                                |(
+                                    tra_id,
+                                    tra_venue,
+                                    ori_balance,
+                                    tra_currency,
+                                    api_key,
+                                    secret_key,
+                                    other_keys,
+                                    r#type,
+                                    name,
+                                    show,
+                                    threshold
+                                )| Trader {
+                                    tra_id,
+                                    tra_venue,
+                                    ori_balance,
+                                    tra_currency,
+                                    api_key,
+                                    secret_key,
+                                    other_keys,
+                                    r#type,
+                                    name,
+                                    show,
+                                    threshold
+                                },
+                            )
+                        },
+                    );
+                    match res {
+                        Ok(trader) => match trader {
+                            Some(tra) => {
+                                traders.push(tra);
+                            }
+                            None => {
+                                return Ok(Some(traders));
+                            }
+                        },
+                        Err(e) => {
+                            return Err(e);
+                        }
+                    }
+    return Ok(Some(traders));
 }
 
 // 获取账户列表

@@ -68,6 +68,8 @@ pub async fn server(ip: String, config_db: HashMap<String, String>) -> std::io::
             .service(web::resource("/test_xh02_two").route(web::post().to(handlers::get_bian_xh02_equity_two)))
             .service(web::resource("/test_xh02_three").route(web::post().to(handlers::get_bian_xh02_equity_three)))
             .service(web::resource("/test_xh02_four").route(web::post().to(handlers::get_bian_xh02_equity_four)))
+            .service(web::resource("/get_traders").route(web::post().to(handlers::select_traders)))
+
 
             
     })
