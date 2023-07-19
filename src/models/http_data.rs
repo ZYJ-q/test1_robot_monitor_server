@@ -17,6 +17,7 @@ pub struct SignInProRes {
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SignInRes {
     pub(crate) name: String,
+    pub(crate) account: u64,
     pub(crate) admin: String,
     pub(crate) products: Vec<SignInProRes>,
     pub(crate) token: String,
