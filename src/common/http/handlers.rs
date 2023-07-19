@@ -40,7 +40,7 @@ pub async fn sign_in(
             Some(response) => {
                 let rand_string: String = thread_rng()
                     .sample_iter(Alphanumeric)
-                    .take(10)
+                    .take(15)
                     .map(char::from)
                     .collect();
                 match database::add_active(

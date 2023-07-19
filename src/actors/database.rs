@@ -56,11 +56,12 @@ pub fn add_active(
     token: &str,
     name: &str,
 ) -> Result<Vec<SignInProRes>> {
+    println!("参数account_id{}, token{}, name{}", account_id, token, name);
     let mut conn = pool.get_conn().unwrap();
     let mut re: Vec<SignInProRes> = Vec::new();
     let res = conn
         .exec_first(
-            r"select * from actives where name = :name",
+            r"select * from active where name = :name",
             params! {
                 "name" => name
             },
@@ -79,7 +80,7 @@ pub fn add_active(
         Ok(resq) => match resq {
             Some(active) => {
                 conn.exec_drop(
-                    r"delete from actives where name = :name",
+                    r"delete from active where name = :name",
                     params! {
                         "name" => active.name
                     },
@@ -92,7 +93,7 @@ pub fn add_active(
     }
 
     let res = conn.exec_drop(
-        r"INSERT INTO actives (acc_id, token, name) VALUES (:acc_id, :token, :name)",
+        r"INSERT INTO active (acc_id, token, name) VALUES (:acc_id, :token, :name)",
         params! {
             "acc_id" => account_id,
             "token" => token,
